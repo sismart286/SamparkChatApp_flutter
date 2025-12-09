@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sampark_chat_app_25/Controller/AuthController.dart';
 import 'package:sampark_chat_app_25/Widgets/PrimaryButton.dart';
 
 class SignupForm extends StatelessWidget {
@@ -6,38 +8,55 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    AuthController authController = Get.put(AuthController());
+    TextEditingController name = TextEditingController();
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+    return Column(
       children: [
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         TextField(
-          decoration: InputDecoration(
+          controller: name,
+          decoration: const InputDecoration(
             hintText: "Full Name",
             prefixIcon: Icon(Icons.person),
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         TextField(
-          decoration: InputDecoration(
+          controller: email,
+          decoration: const InputDecoration(
             hintText: "Email",
             prefixIcon: Icon(Icons.alternate_email_rounded),
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         TextField(
-          decoration: InputDecoration(
+          controller: password,
+          decoration: const InputDecoration(
             hintText: "Password",
             prefixIcon: Icon(Icons.password_outlined),
           ),
         ),
-        SizedBox(height: 60),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PrimaryButton(
-              btnName: "SIGNUP",
-              icon: Icons.lock_open_outlined,
-            ),
-          ],
+        const SizedBox(height: 60),
+        Obx(
+          () => authController.isLoading.value
+              ? const CircularProgressIndicator()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PrimaryButton(
+                      ontap: () {
+                        authController.createUser(
+                          email.text,
+                          password.text,
+                        );
+                      },
+                      btnName: "SIGNUP",
+                      icon: Icons.lock_open_outlined,
+                    ),
+                  ],
+                ),
         ),
       ],
     );
