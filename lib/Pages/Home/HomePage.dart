@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
 import 'package:sampark_chat_app_25/Config/Strings.dart';
+import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
 import 'package:sampark_chat_app_25/Pages/Home/Widget/ChatList.dart';
 import 'package:sampark_chat_app_25/Pages/Home/Widget/TabBar.dart';
 
@@ -16,6 +18,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
+    ProfileController profileController = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -35,7 +39,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             icon: Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed("/profilePage");
+            },
             icon: Icon(Icons.more_vert),
           ),
         ],

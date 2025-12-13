@@ -40,8 +40,9 @@ dependencies:
   get: ^4.6.6 # For State Management And Page Routing
   firebase_core: ^2.25.4 # For Firebase
   firebase_auth: ^4.17.4 # For Firebase Authentication
-  cloud_firestore: ^4.15.4
+  cloud_firestore: ^4.15.4 # For Cloud Firestore
   firebase_storage: ^11.6.5
+  firebase_app_check: ^0.2.1+6 # Use the correct latest version
 
 dev_dependencies:
   flutter_test:
