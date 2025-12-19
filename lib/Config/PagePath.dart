@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:sampark_chat_app_25/Pages/Auth/AuthPage.dart';
 import 'package:sampark_chat_app_25/Pages/Chat/ChatPage.dart';
 import 'package:sampark_chat_app_25/Pages/Home/HomePage.dart';
-import 'package:sampark_chat_app_25/Pages/UserProfile/ProfilePage.dart';
+import 'package:sampark_chat_app_25/Pages/UserProfile/UserProfilePage.dart';
 import 'package:sampark_chat_app_25/Pages/UserProfile/UpdateProfile.dart';
 
 var pagePath = [
@@ -21,14 +21,14 @@ var pagePath = [
     page: () => ChatPage(),
     transition: Transition.rightToLeft,
   ),
-  GetPage(
-    name: "/profilePage",
-    page: () => UserProfilePage(),
-    transition: Transition.rightToLeft,
-  ),
-  GetPage(
-    name: "/updateProfilePage",
-    page: () => UserUpdateProfile(),
-    transition: Transition.rightToLeft,
-  ),
+  // GetPage(
+  //   name: "/profilePage",
+  //   page: () => UserProfilePage(),
+  //   transition: Transition.rightToLeft,
+  // ),
+  // GetPage(
+  //   name: "/updateProfilePage",
+  //   page: () => UserUpdateProfile(),
+  //   transition: Transition.rightToLeft,
+  // ),
 ];

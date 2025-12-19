@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
 import 'package:sampark_chat_app_25/Config/Strings.dart';
+import 'package:sampark_chat_app_25/Controller/ImagePicker.dart';
 import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
 import 'package:sampark_chat_app_25/Pages/Home/Widget/ChatList.dart';
 import 'package:sampark_chat_app_25/Pages/Home/Widget/TabBar.dart';
+import 'package:sampark_chat_app_25/Pages/ProfilePage/ProfilePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +21,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
     ProfileController profileController = Get.put(ProfileController());
+
+    ImagePickerController imagePickerController =
+        Get.put(ImagePickerController());
 
     return Scaffold(
       appBar: AppBar(
@@ -35,12 +40,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              imagePickerController.pickImage();
+            },
             icon: Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
-              Get.toNamed("/profilePage");
+              // Get.toNamed("/profilePage");
+              Get.to(() => ProfilePage());
             },
             icon: Icon(Icons.more_vert),
           ),
