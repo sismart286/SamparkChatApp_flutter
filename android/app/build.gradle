@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.sampark_chat_app_25"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
