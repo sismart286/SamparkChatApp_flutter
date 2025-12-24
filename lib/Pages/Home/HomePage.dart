@@ -46,7 +46,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             icon: Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await profileController.getUserDetail();
               Get.to(() => ProfilePage());
             },
             icon: Icon(Icons.more_vert),
@@ -55,7 +56,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         bottom: myTabBar(tabController, context),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed("/contactPage");
+        },
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(
           Icons.add,
