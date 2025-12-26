@@ -2,6 +2,9 @@ class AssetsImage {
   static const iconsPath = "assets/Icons";
   static const imagesPath = "assets/Images";
 
+  static const defaultProfileUrl =
+      "https://firebasestorage.googleapis.com/v0/b/samparkchatapp-25.firebasestorage.app/o/boy_pic.png?alt=media&token=5c80ddd8-6003-4a6d-ba6f-640b121778bb";
+
   // PNG Images Only
   static const boyPic = "$imagesPath/boy_pic.png";
   static const girlPic = "$imagesPath/girl_pic.png";
