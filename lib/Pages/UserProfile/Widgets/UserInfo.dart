@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,7 +7,14 @@ import 'package:sampark_chat_app_25/Config/Images.dart';
 import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
 
 class LoginUserInfo extends StatelessWidget {
-  const LoginUserInfo({super.key});
+  final String profileImage;
+  final String userName;
+  final String userEmail;
+  const LoginUserInfo(
+      {super.key,
+      required this.profileImage,
+      required this.userName,
+      required this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +33,20 @@ class LoginUserInfo extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      AssetsImage.boyPic,
+                    Container(
+                      width: 150,
+                      height: 150,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CachedNetworkImage(
+                          imageUrl: profileImage,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -34,24 +54,18 @@ class LoginUserInfo extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Obx(
-                      () => Text(
-                        profileController.currentUser.value.name! == null
-                            ? "User"
-                            : profileController.currentUser.value.name!,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    Text(
+                      userName,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Obx(
-                      () => Text(
-                        profileController.currentUser.value.email!,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
+                    Text(
+                      userEmail,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ],
                 ),

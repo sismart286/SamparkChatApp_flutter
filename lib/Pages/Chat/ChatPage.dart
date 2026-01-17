@@ -1,32 +1,85 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
+import 'package:sampark_chat_app_25/Controller/ChatController.dart';
+import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
+import 'package:sampark_chat_app_25/Model/ChatModel.dart';
+import 'package:sampark_chat_app_25/Model/UserModel.dart';
 import 'package:sampark_chat_app_25/Pages/Chat/Widgets/ChatBubble.dart';
+import 'package:sampark_chat_app_25/Pages/Chat/Widgets/TypeMessage.dart';
+import 'package:sampark_chat_app_25/Pages/UserProfile/UserProfilePage.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  final UserModel userModel;
+  const ChatPage({super.key, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
+    ChatController chatController = Get.put(ChatController());
+    TextEditingController messageController = TextEditingController();
+    ProfileController profileController = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Image.asset(AssetsImage.boyPic),
+        leading: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () {
+            Get.to(
+              UserProfilePage(
+                userModel: userModel,
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      userModel.profileImage ?? AssetsImage.defaultProfileUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
+            ),
+          ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Nitish Kumar",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Text(
-              "Online",
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
+        title: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () {
+            Get.to(
+              UserProfilePage(
+                userModel: userModel,
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userModel.name ?? "User",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    "Online",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           IconButton(
@@ -39,86 +92,97 @@ class ChatPage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Theme.of(context).colorScheme.primaryContainer,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatMicSvg,
-                width: 25,
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: false,
-                  hintText: "Type message...",
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            Container(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatGallarySvg,
-                width: 25,
-              ),
-            ),
-            SizedBox(width: 10),
-            Container(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatSendSvg,
-                width: 25,
-              ),
-            ),
-          ],
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
+        padding: EdgeInsets.only(bottom: 10, top: 10, left: 10, right: 10),
+        child: Column(
           children: [
-            ChatBubble(
-              message: "Hello how are you ?",
-              imageUrl: "",
-              isComming: true,
-              status: "read",
-              time: "10:10 AM",
+            Expanded(
+              child: Stack(
+                children: [
+                  StreamBuilder<List<ChatModel>>(
+                    stream: chatController.getMessages(userModel.id!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Error: ${snapshot.error}"),
+                        );
+                      }
+                      if (snapshot.data == null) {
+                        return const Center(
+                          child: Text("No Messages"),
+                        );
+                      } else {
+                        return ListView.builder(
+                          reverse: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            DateTime timestamp = DateTime.parse(
+                                snapshot.data![index].timestamp!);
+                            String formattedTime =
+                                DateFormat('hh:mm a').format(timestamp);
+                            return ChatBubble(
+                              message: snapshot.data![index].message!,
+                              imageUrl: snapshot.data![index].imageUrl ?? "",
+                              isComming: snapshot.data![index].receiverId ==
+                                  profileController.currentUser.value.id,
+                              status: "read",
+                              time: formattedTime,
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  Obx(
+                    () => (chatController.selectedImagePath.value != "")
+                        ? Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: FileImage(
+                                        File(chatController
+                                            .selectedImagePath.value),
+                                      ),
+                                      fit: BoxFit.contain,
+                                    ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  height: 500,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      chatController.selectedImagePath.value =
+                                          "";
+                                    },
+                                    icon: Icon(Icons.close),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
             ),
-            ChatBubble(
-              message: "Hello how are you ?",
-              imageUrl: "",
-              isComming: false,
-              status: "read",
-              time: "10:10 AM",
-            ),
-            ChatBubble(
-              message: "Hello how are you ?",
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSWJ2L8hUSAam6dgNKnOJ869o7oguocIApA&s",
-              isComming: false,
-              status: "read",
-              time: "10:10 AM",
-            ),
-            ChatBubble(
-              message: "Hello how are you ?",
-              imageUrl: "",
-              isComming: true,
-              status: "read",
-              time: "10:10 AM",
+            TypeMessage(
+              userModel: userModel,
             ),
           ],
         ),

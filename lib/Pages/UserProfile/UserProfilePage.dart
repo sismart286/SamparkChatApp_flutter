@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
 import 'package:sampark_chat_app_25/Controller/AuthController.dart';
 import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
+import 'package:sampark_chat_app_25/Model/UserModel.dart';
 import 'package:sampark_chat_app_25/Pages/UserProfile/Widgets/UserInfo.dart';
 
 class UserProfilePage extends StatelessWidget {
-  const UserProfilePage({super.key});
+  final UserModel userModel;
+  const UserProfilePage({super.key, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,12 @@ class UserProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            LoginUserInfo(),
+            LoginUserInfo(
+              profileImage:
+                  userModel.profileImage ?? AssetsImage.defaultProfileUrl,
+              userName: userModel.name ?? "User",
+              userEmail: userModel.email ?? "",
+            ),
             Spacer(),
             ElevatedButton(
               onPressed: () {

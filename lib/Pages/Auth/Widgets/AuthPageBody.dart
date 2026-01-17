@@ -26,6 +26,8 @@ class AuthPageBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () {
                           isLogin.value = true;
                         },
@@ -54,6 +56,8 @@ class AuthPageBody extends StatelessWidget {
                         ),
                       ),
                       InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () {
                           isLogin.value = false;
                         },

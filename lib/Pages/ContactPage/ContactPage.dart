@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
+import 'package:sampark_chat_app_25/Controller/ChatController.dart';
 import 'package:sampark_chat_app_25/Controller/ContactController.dart';
+import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
+import 'package:sampark_chat_app_25/Pages/Chat/ChatPage.dart';
 import 'package:sampark_chat_app_25/Pages/ContactPage/Widgets/ContactSearch.dart';
 import 'package:sampark_chat_app_25/Pages/ContactPage/Widgets/NewContactTile.dart';
 import 'package:sampark_chat_app_25/Pages/Home/Widget/ChatTile.dart';
@@ -15,6 +18,8 @@ class ContactPage extends StatelessWidget {
   Widget build(BuildContext context) {
     RxBool isSearchEnable = false.obs;
     ContactController contactController = Get.put(ContactController());
+    ProfileController profileController = Get.put(ProfileController());
+    ChatController chatController = Get.put(ChatController());
     return Scaffold(
       appBar: AppBar(
         title: Text("Select contact"),
@@ -64,15 +69,20 @@ class ContactPage extends StatelessWidget {
                 children: contactController.usersList
                     .map(
                       (e) => InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () {
-                          // Get.toNamed("/chatPage");
+                          Get.to(ChatPage(userModel: e));
                         },
                         child: ChatTile(
                           imageUrl:
                               e.profileImage ?? AssetsImage.defaultProfileUrl,
                           name: e.name ?? "User",
                           lastChat: e.about ?? "Hey there.",
-                          lastTime: "",
+                          lastTime: e.email ==
+                                  profileController.currentUser.value.email
+                              ? "You"
+                              : "",
                         ),
                       ),
                     )

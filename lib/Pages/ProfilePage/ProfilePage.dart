@@ -7,6 +7,7 @@ import 'package:sampark_chat_app_25/Controller/AuthController.dart';
 import 'package:sampark_chat_app_25/Controller/ImagePicker.dart';
 import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
 import 'package:sampark_chat_app_25/Widgets/PrimaryButton.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -64,6 +65,8 @@ class ProfilePage extends StatelessWidget {
                             Obx(
                               () => isEdit.value
                                   ? InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
                                       onTap: () async {
                                         imagePath.value =
                                             await imagePickerController
@@ -113,10 +116,17 @@ class ProfilePage extends StatelessWidget {
                                           : ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(100),
-                                              child: Image.network(
-                                                profileController.currentUser
-                                                    .value.profileImage!,
+                                              child: CachedNetworkImage(
+                                                imageUrl: profileController
+                                                    .currentUser
+                                                    .value
+                                                    .profileImage!,
                                                 fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    CircularProgressIndicator(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
                                               ),
                                             ),
                                     ),
