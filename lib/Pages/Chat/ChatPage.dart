@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
@@ -170,7 +168,7 @@ class ChatPage extends StatelessWidget {
                                       chatController.selectedImagePath.value =
                                           "";
                                     },
-                                    icon: Icon(Icons.close),
+                                    icon: const Icon(Icons.close),
                                   ),
                                 ),
                               ],

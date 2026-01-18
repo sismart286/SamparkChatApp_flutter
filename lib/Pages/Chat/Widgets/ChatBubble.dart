@@ -26,7 +26,7 @@ class ChatBubble extends StatelessWidget {
             isComming ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             constraints: BoxConstraints(
               maxWidth: MediaQuery.sizeOf(context).width / 1.3,
             ),
@@ -67,7 +67,7 @@ class ChatBubble extends StatelessWidget {
                     ],
                   ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment:
                 isComming ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -83,7 +83,7 @@ class ChatBubble extends StatelessWidget {
                           time,
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         SvgPicture.asset(
                           AssetsImage.chatStatusSvg,
                           width: 20,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sampark_chat_app_25/Config/Images.dart';
 import 'package:sampark_chat_app_25/Controller/ChatController.dart';
 import 'package:sampark_chat_app_25/Controller/ImagePicker.dart';
 import 'package:sampark_chat_app_25/Model/UserModel.dart';
+import 'package:sampark_chat_app_25/Widgets/ImagePickerBottomSheet.dart';
 
 class TypeMessage extends StatelessWidget {
   final UserModel userModel;
@@ -35,7 +37,7 @@ class TypeMessage extends StatelessWidget {
               width: 25,
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: TextField(
               onChanged: (value) {
@@ -46,13 +48,13 @@ class TypeMessage extends StatelessWidget {
                   filled: false, hintText: "Type message..."),
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Obx(
             () => chatController.selectedImagePath.value == ""
                 ? InkWell(
                     onTap: () async {
-                      chatController.selectedImagePath.value =
-                          await imagePickerController.pickImage();
+                      ImagePickerBottomSheet(
+                          context, chatController, imagePickerController);
                     },
                     child: Container(
                       width: 30,

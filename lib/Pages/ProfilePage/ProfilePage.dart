@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sampark_chat_app_25/Controller/AuthController.dart';
 import 'package:sampark_chat_app_25/Controller/ImagePicker.dart';
 import 'package:sampark_chat_app_25/Controller/ProfileController.dart';
@@ -58,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -70,7 +71,7 @@ class ProfilePage extends StatelessWidget {
                                       onTap: () async {
                                         imagePath.value =
                                             await imagePickerController
-                                                .pickImage();
+                                                .pickImage(ImageSource.gallery);
 
                                         log("imagePath: ${imagePath.value}");
                                       },
